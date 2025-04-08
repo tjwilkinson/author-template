@@ -104,6 +104,7 @@ Based on the user's selections, create an appropriate folder structure:
    - Check if .gitignore and .gitignore-template files exist
    - If they exist, add any custom content folders to both files
    - Ensure all newly created top-level directories are added to both files
+   - **IMPORTANT:** Run the `./update-gitignore.sh` script which will automatically update both .gitignore files with content directories
    - This will ensure content folders are properly excluded when pushing template updates
 
 5. **Explain the Purpose:** As you create each folder, explain:
@@ -234,6 +235,12 @@ Create the following standard rules files that will govern the AI's behavior thr
     - **Cross-Project References:** Maintain consistent references to events, characters, or concepts that appear in multiple projects.
     - **Timeline Consistency:** Ensure chronological consistency for elements that span multiple projects.
 
+- `.cursor/rules/repository_management.md`: Define how and when to use the repository scripts:
+  - **Template Mode Script:** Instructions for when to use template-mode.sh to switch between writing and template update modes.
+  - **GitIgnore Update Script:** Instructions for using update-gitignore.sh to maintain proper separation between template and content.
+  - **Standard Operating Procedures:** Guidelines for template improvements, project setup, and writing activities.
+  - **Error Prevention:** Protocols for preventing accidental mixing of template updates and writing content.
+
 These rules should be largely the same across all projects, focusing on *process consistency* rather than project-specific content details. The project-specific details will be contained in the outlines and author profile, which these rules will direct the AI to reference.
 
 ### 9. Setup Completion
@@ -243,7 +250,11 @@ Once setup is complete:
 1. Provide a summary of everything created.
 2. Explain to the user how to start using the project.
 3. Move this file to `.cursor/Archive/00_setup_guide.md`.
-4. Inform the user that the initial setup is complete and that you are now operating under the new project rules.
+4. **Introduce Repository Management Scripts:**
+   - Explain the purpose of `template-mode.sh` and `update-gitignore.sh`
+   - Emphasize their importance for maintaining separation between template and content
+   - Direct the user to the README.md for detailed instructions on repository management
+5. Inform the user that the initial setup is complete and that you are now operating under the new project rules.
 
 ## Final Notes to AI Assistant
 
