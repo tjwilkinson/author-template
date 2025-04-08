@@ -161,6 +161,29 @@ This script automatically handles gitignore rules. Since the Multiverse director
 6. Run `./template-mode.sh off`
 7. Continue with writing work
 
+### Automatic Template Mode for Non-Multiverse Files
+
+**CRITICAL RULE: Any time a file outside of the Multiverse/ directory is created or edited, template mode MUST be toggled before and after.**
+
+1. **Before editing any non-Multiverse file**:
+   - Automatically run `./template-mode.sh on`
+   - Inform the user that template mode has been activated
+   - Explain that changes to these files affect the template structure
+
+2. **During non-Multiverse file editing**:
+   - Clearly indicate to the user that they are editing template files
+   - Remind the user that these changes should eventually be pushed to main
+
+3. **After completing non-Multiverse file edits**:
+   - Commit the changes with a clear message about the template improvements
+   - If pushing to main now, use `git push origin HEAD:main`
+   - If not pushing to main yet, run `./template-mode.sh off` to return to writing mode
+   - Inform the user that template mode has been deactivated
+
+4. **Exception for Temporary Files**:
+   - Temporary files or logs that are already ignored in .gitignore do not require template mode
+   - For all other non-Multiverse files, this rule is mandatory
+
 ### For Project Setup
 
 1. Guide the user through the setup process following the setup guide
