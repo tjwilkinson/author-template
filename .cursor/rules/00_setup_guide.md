@@ -100,7 +100,13 @@ Based on the user's selections, create an appropriate folder structure:
      - `Shared/Templates/` for document templates to maintain consistency
    - Create a `Meta/` folder for series-wide or collection-wide planning and documentation
 
-4. **Explain the Purpose:** As you create each folder, explain:
+4. **Update GitIgnore Files:** After creating the folder structure:
+   - Check if .gitignore and .gitignore-template files exist
+   - If they exist, add any custom content folders to both files
+   - Ensure all newly created top-level directories are added to both files
+   - This will ensure content folders are properly excluded when pushing template updates
+
+5. **Explain the Purpose:** As you create each folder, explain:
    - Its purpose within the chosen narrative structure
    - How it relates to the writing process
    - What types of content should be placed there
