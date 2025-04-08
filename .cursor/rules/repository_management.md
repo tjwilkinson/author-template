@@ -2,6 +2,21 @@
 
 This rule file defines when and how to use the repository management scripts within this project. These scripts help maintain separation between template structure and writing content.
 
+## Definitions and Terminology
+
+**Template/System Files**: Any files outside of the `Multiverse/` directory are considered template or system files. This includes:
+- All files and folders in the `.cursor/` directory
+- All files and folders in the `docs/` directory
+- All script files (*.sh) and their contents
+- All configuration files (.gitignore, etc.) and their contents
+- All files and folders at the repository root level
+
+**Content Files**: Any files inside the `Multiverse/` directory are considered content files (writing content). This is where all actual writing should be stored.
+
+**Branch Types**:
+- **Template Branch**: The `main` branch is the only template branch. It contains only template files and empty Multiverse structure.
+- **Universe Branches**: All branches other than `main` are universe branches that contain writing content. These should use the prefix `universe-` in their names (e.g., `universe-fantasy`).
+
 ## Content Organization
 
 **CRITICAL RULE: The `main` branch must ONLY contain template files, server files, and the empty Multiverse directory structure.**
@@ -15,11 +30,7 @@ All writing content MUST be organized within a single top-level directory:
   - All actual writing content should be committed only to writing branches
   - The `Multiverse/` directory serves as a clean boundary between template and content
 
-Inside the `Multiverse/` directory, writers can organize their work:
-- `Multiverse/Series/` - Multiple books in a series
-- `Multiverse/Education/` - Related educational materials
-- `Multiverse/Shared/` - Resources shared across projects
-- `Multiverse/Meta/` - Collection-wide planning
+Inside the `Multiverse/` directory, writers can organize their work following the custom structure created during the initial setup process. This structure should be created interactively with the AI assistant according to the 00_setup_guide.md rules.
 
 This organization provides several benefits:
 1. Clear separation between template files and writing content
@@ -27,29 +38,65 @@ This organization provides several benefits:
 3. Makes it obvious to users where content should go
 4. Easy to create new writing projects by branching from main
 
-### Branch Structure
+### Branch Structure and Naming
 
 - **Main Branch**: 
   - Contains template files, server implementation, and the empty Multiverse/ directory structure
   - NEVER commit actual writing content to the main branch
   - Only push template improvements and structure changes to main
 
-- **Writing/Universe Branches**:
-  - ALL writing work must be done in separate branches
+- **Universe Branches**:
+  - ALL writing work must be done in universe branches
   - Each branch contains its author content within the `Multiverse/` directory
-  - A single branch can contain multiple related projects within appropriate subdirectories
+  - Universe branches should use the naming convention: `universe-<name>` 
+    - Examples: `universe-fantasy`, `universe-mystery`, `universe-scifi`
   - The branch structure supports the full project organization described in the setup guide
-  - **IMPORTANT:** When pushing to GitHub, the Multiverse directory and its content SHOULD be included
+  - **IMPORTANT:** When pushing to GitHub from universe branches, the Multiverse directory and its content SHOULD be included
   - **IMPORTANT:** When merging with main, ONLY template improvements should be included, NOT Multiverse content
+
+## Branch Tracking
+
+A record of all branches should be maintained in the `.cursor/Config/branches.md` file. This file tracks:
+- Branch name and purpose
+- Author associated with the branch
+- Creation date and last updated date
+- Branch status (active/archived)
+
+This file should be updated automatically whenever branches are created or deleted, even if the branch is only local and not pushed to remote.
+
+## Template Mode Usage
+
+Template mode is a critical feature that controls which files are tracked by git. It must be used correctly to maintain proper separation between template and content.
+
+### How to Toggle Template Mode
+
+Always use the script commands to toggle template mode:
+
+- **Activate Template Mode**: `./template-mode.sh on`
+- **Deactivate Template Mode**: `./template-mode.sh off`
+
+ALWAYS verify the command output to confirm the mode has changed successfully.
+
+### When to Use Template Mode
+
+- **Template Mode ON (Required)**:
+  - Before editing ANY files outside the Multiverse/ directory
+  - Before pushing template improvements to main
+  - When making changes to the template infrastructure
+  
+- **Template Mode OFF (Required)**:
+  - Before editing ANY files inside the Multiverse/ directory
+  - When working on writing content
+  - When pushing content to universe branches
 
 ## Pushing and Merging Rules
 
-### Pushing to GitHub from Writing/Universe Branches
+### Pushing to GitHub from Universe Branches
 
-When pushing a writing/universe branch to GitHub:
+When pushing a universe branch to GitHub:
 
 1. **Include Multiverse Content**:
-   - The entire Multiverse directory and all writing content within it SHOULD be pushed
+   - The entire Multiverse directory and all writing content within it SHOULD be included
    - This preserves the complete writing project in the remote repository
    - Run a normal `git push origin <branch-name>` to include all content
 
@@ -102,52 +149,6 @@ When branching from an existing universe branch (not main), the following rules 
    - For collaborative projects, create a specialized collaborative profile
    - Document the agreed-upon style, vocabulary, and approach for the collaboration
    - Note individual author contributions and style variances where relevant
-
-## Core Scripts
-
-The following scripts must be used in specific scenarios:
-
-### 1. Template Mode Script (`template-mode.sh`)
-
-This script toggles between writing mode and template update mode. **Always use this script when making template modifications.**
-
-- **When to use `./template-mode.sh on`**:
-  - Before making changes to any template files (in `.cursor/` or `docs/`)
-  - Before improving the server implementation
-  - Before updating any project structure or rule files
-  - Before pushing template improvements to the main branch
-
-- **When to use `./template-mode.sh off`**:
-  - After completing template improvements
-  - After pushing changes to the main branch
-  - When returning to writing content
-
-- **How to use**:
-  ```bash
-  # To switch to template mode (content changes ignored)
-  ./template-mode.sh on
-  
-  # Make template improvements
-  # Commit changes
-  # Push to main: git push origin HEAD:main
-  
-  # To switch back to writing mode
-  ./template-mode.sh off
-  ```
-
-### 2. GitIgnore Update Script (`update-gitignore.sh`)
-
-This script automatically handles gitignore rules. Since the Multiverse directory is now part of the repository structure, it ensures that the directory exists but does not ignore it.
-
-- **When to use**:
-  - After the initial project setup
-  - When setting up a new writing branch
-
-- **How to use**:
-  ```bash
-  # Ensure the Multiverse directory structure exists
-  ./update-gitignore.sh
-  ```
 
 ## Standard Operating Procedures
 
@@ -222,10 +223,11 @@ This script automatically handles gitignore rules. Since the Multiverse director
 ### For Starting a New Project
 
 1. If the user wants to start a new, separate writing project:
-   - Create a new branch from main: `git checkout -b new-writing-project`
+   - Create a new branch from main: `git checkout -b universe-<name>`
    - This ensures they start with a clean template with the empty Multiverse structure
    - Complete the setup process for this new branch, creating content within `Multiverse/`
    - Run `./update-gitignore.sh` after setup
+   - Update the branch tracking file with the new branch information
 
 ## Error Prevention
 
@@ -261,13 +263,15 @@ When this situation is detected:
 
 2. **Guide branch creation process**:
    - Ask the user for a universe/branch name
+   - Suggest using the convention `universe-<name>` (e.g., `universe-fantasy`)
    - Have a conversation to help the user decide on an appropriate name if needed
-   - Suggest names related to their writing project (e.g., "fantasy-series", "mystery-novel", etc.)
+   - Suggest names related to their writing project (e.g., "universe-fantasy", "universe-mystery", etc.)
 
 3. **Create the branch**:
-   - Create a new branch with the desired name: `git checkout -b <universe-name>`
+   - Create a new branch with the desired name: `git checkout -b universe-<name>`
    - Run `./update-gitignore.sh` to ensure the Multiverse structure is properly set up
    - Set up author profile files if needed (following the Author Profile Management rules)
+   - Update the branch tracking file with the new branch information
 
 4. **Redirect writing activity**:
    - Once the branch is created, direct the user to continue their writing within the new branch
