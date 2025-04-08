@@ -1,34 +1,36 @@
 #!/bin/bash
-# Script to create and maintain the Multiverse directory structure
+# Script to handle gitignore configuration and remind about the interactive Multiverse structure setup process
 #
 # IMPORTANT:
-# This script creates the Multiverse directory structure and ensures that:
-# 1. In writing/universe branches: Content files (.md, .txt, .docx) are properly tracked
-#    - When in writing mode (.gitignore is normal), your content will be pushed with 'git push'
-# 2. In template mode: Content files are ignored when pushing to main
-#    - When in template mode (after ./template-mode.sh on), content changes are ignored 
-#      when pushing to main using 'git push origin HEAD:main'
+# According to 00_setup_guide.md, the Multiverse directory structure should be:
+# 1. Created through an interactive conversation with the AI assistant
+# 2. Customized based on the user's project type, organization preference, and writing structure
+# 3. NOT automatically generated with a predefined structure
 #
-# Run this script in a new branch to set up the directory structure
+# This script now focuses only on gitignore configuration and empty Multiverse directory
 
-# Create the Multiverse directory structure
-echo "Creating Multiverse directory structure..."
+echo "Multiverse Directory Setup"
+echo "==========================="
+echo ""
+echo "IMPORTANT: According to the setup rules, your Multiverse directory structure"
+echo "should be created through an interactive conversation with the AI assistant."
+echo ""
+echo "The proper setup process includes:"
+echo "1. Discussing your writing project type and purpose"
+echo "2. Determining single vs. multi-project organization"
+echo "3. Selecting appropriate writing structures/templates"
+echo "4. Creating a CUSTOMIZED folder structure based on your specific needs"
+echo ""
+echo "This script will only create an empty Multiverse directory and configure gitignore settings."
+echo "You should engage with the AI assistant for the interactive setup of your project structure."
+echo ""
 
-# Create main directories
-mkdir -p Multiverse/Series
-mkdir -p Multiverse/Education
-mkdir -p Multiverse/Shared/Characters
-mkdir -p Multiverse/Shared/Settings
-mkdir -p Multiverse/Shared/Timeline
-mkdir -p Multiverse/Meta
-
-# Add placeholder files to track the directories in git
-echo "# Series Directory" > Multiverse/Series/.gitkeep
-echo "# Education Directory" > Multiverse/Education/.gitkeep
-echo "# Shared Characters Directory" > Multiverse/Shared/Characters/.gitkeep
-echo "# Shared Settings Directory" > Multiverse/Shared/Settings/.gitkeep
-echo "# Shared Timeline Directory" > Multiverse/Shared/Timeline/.gitkeep
-echo "# Meta Directory" > Multiverse/Meta/.gitkeep
+# Create empty Multiverse directory if it doesn't exist
+if [ ! -d "Multiverse" ]; then
+    echo "Creating empty Multiverse directory..."
+    mkdir -p Multiverse
+    echo "# Multiverse Directory - Structure to be created interactively" > Multiverse/.gitkeep
+fi
 
 # Update .gitignore if needed
 if [ -f .gitignore ]; then
@@ -126,13 +128,20 @@ else
     echo "Created .gitignore-template with Multiverse patterns"
 fi
 
-echo "Multiverse directory structure setup complete!"
 echo ""
-echo "IMPORTANT WORKFLOW NOTES:"
-echo "1. FOR WRITING BRANCHES: Use normal git commands to push content to GitHub"
-echo "   - Use 'git push origin <branch-name>' to include ALL your writing content"
+echo "Gitignore configuration complete!"
 echo ""
-echo "2. FOR TEMPLATE CHANGES: Use template mode to push to main"
-echo "   - Run './template-mode.sh on' before making template changes"
-echo "   - Push template changes with 'git push origin HEAD:main'"
-echo "   - Run './template-mode.sh off' to return to writing mode" 
+echo "NEXT STEPS:"
+echo "1. ENGAGE WITH THE AI ASSISTANT to create your custom Multiverse structure"
+echo "   - Discuss your project type and goals"
+echo "   - Select an appropriate writing structure"
+echo "   - Design a folder organization that suits your specific needs"
+echo ""
+echo "2. BRANCH MANAGEMENT:"
+echo "   - FOR WRITING: Use normal git commands to push content to GitHub"
+echo "     'git push origin <branch-name>' to include ALL your writing content"
+echo ""
+echo "   - FOR TEMPLATE CHANGES: Use template mode to push to main"
+echo "     './template-mode.sh on' before making template changes"
+echo "     'git push origin HEAD:main' to push template changes"
+echo "     './template-mode.sh off' to return to writing mode" 
