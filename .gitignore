@@ -1,49 +1,7 @@
-# macOS system files
-.DS_Store
-.AppleDouble
-.LSOverride
-Icon
-._*
+# This file is used when you want to push template improvements
+# It excludes all writing content but includes template and server files
 
-# Python virtual environment
-venv/
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Editor files
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Logs and databases
-*.log
-*.sqlite
-*.sqlite3
-*.db
-
-# User-specific workspace configurations
-*.code-workspace.user
-
-# Writing content directories (excluded from template updates)
+# Writing content directories
 /Series/
 /Manuscript/
 /Projects/
@@ -53,5 +11,14 @@ var/
 /Education/
 /Shared/
 
-# Add a gitignore-template file to selectively ignore content
-.gitignore-template 
+# Keep system files excluded
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+__pycache__/
+*.py[cod]
+*$py.class
+.vscode/
+.idea/ 
