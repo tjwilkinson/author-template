@@ -2,9 +2,32 @@
 
 This rule file defines when and how to use the repository management scripts within this project. These scripts help maintain separation between template structure and writing content.
 
-## Branch Structure
+## Content Organization
 
 **CRITICAL RULE: The `main` branch must ONLY contain template and server files.**
+
+### Simplified Content Structure
+
+All author content MUST be organized within a single top-level directory:
+
+- **`Author/`** - This directory contains the entire author multiverse
+  - This folder exists in the template but is ignored by default in git
+  - ALL writing content must be placed inside this directory
+  - The `Author/` directory serves as a clean boundary between template and content
+
+Inside the `Author/` directory, writers can organize their multiverse:
+- `Author/Series/` - Multiple books in a series
+- `Author/Education/` - Related educational materials
+- `Author/Shared/` - Resources shared across projects
+- `Author/Meta/` - Collection-wide planning
+
+This organization provides several benefits:
+1. Clear separation between template files and writing content
+2. Simplified gitignore rules (just ignore one folder)
+3. Makes it obvious to users where content should go
+4. Easy to maintain separation when pushing template improvements
+
+### Branch Structure
 
 - **Main Branch**: 
   - Reserved exclusively for template files and server implementation
@@ -13,19 +36,9 @@ This rule file defines when and how to use the repository management scripts wit
 
 - **Writing Branches**:
   - ALL writing work must be done in separate branches
-  - Each branch can contain a complete writing project or multiverse
-  - A single branch can contain multiple related projects (series, educational materials, etc.)
+  - Each branch contains its author content within the `Author/` directory
+  - A single branch can contain multiple related projects within appropriate subdirectories
   - The branch structure supports the full project organization described in the setup guide
-
-### Multi-Project Organization Within a Branch
-
-As outlined in the setup guide, a single writing branch can contain an entire multiverse:
-- `Series/` - Multiple books in a series
-- `Education/` - Related educational materials
-- `Shared/` - Resources shared across projects
-- `Meta/` - Collection-wide planning
-
-This allows writers to maintain complex, interconnected works within a single branch while keeping the template structure clean in the main branch.
 
 ## Core Scripts
 
@@ -65,7 +78,7 @@ This script automatically adds content directories to the appropriate ignore fil
 
 - **When to use**:
   - After the initial project setup when content folders are created
-  - Whenever new top-level content directories are added
+  - Whenever new top-level content directories are added within `Author/`
   - After restructuring project content organization
 
 - **How to use**:
@@ -89,7 +102,7 @@ This script automatically adds content directories to the appropriate ignore fil
 ### For Project Setup
 
 1. Guide the user through the setup process following the setup guide
-2. Create the appropriate folder structure based on user preferences
+2. Create the appropriate folder structure within the `Author/` directory
 3. **After creating content directories, run `./update-gitignore.sh`**
 4. Complete the setup process
 5. Inform the user about the repository structure and available scripts
@@ -97,7 +110,7 @@ This script automatically adds content directories to the appropriate ignore fil
 ### For Writing Activities
 
 1. Ensure template mode is off (normal writing mode)
-2. Work in content directories as needed
+2. Work in content directories within `Author/` as needed
 3. If new top-level directories are created, run `./update-gitignore.sh`
 
 ### For Starting a New Project
@@ -105,7 +118,7 @@ This script automatically adds content directories to the appropriate ignore fil
 1. If the user wants to start a new, separate writing project:
    - Create a new branch from main: `git checkout -b new-writing-project`
    - This ensures they start with a clean template without existing content
-   - Complete the setup process for this new branch
+   - Complete the setup process for this new branch, creating content within `Author/`
    - Run `./update-gitignore.sh` after folder creation
 
 ## Error Prevention
@@ -123,4 +136,9 @@ If the user attempts content creation while in template mode:
 If the user attempts to commit writing content directly to main:
 1. Immediately alert them that this violates the repository structure
 2. Recommend creating or switching to a writing branch
-3. Explain that main is reserved exclusively for template files 
+3. Explain that main is reserved exclusively for template files
+
+If the user attempts to create content outside the `Author/` directory:
+1. Alert them that all content must be placed inside the `Author/` directory
+2. Explain the benefits of this organization
+3. Offer to help them move the content to the correct location 

@@ -1,6 +1,9 @@
 # This file is used when you want to push template improvements
 # It excludes all writing content but includes template and server files
 
+# Author content directory - contains all writing content
+/Author/
+
 # Writing content directories
 /Series/
 /Manuscript/
