@@ -225,4 +225,32 @@ If the user attempts to commit actual writing content directly to main:
 If the user attempts to create content outside the `Multiverse/` directory:
 1. Alert them that all content must be placed inside the `Multiverse/` directory
 2. Explain the benefits of this organization
-3. Offer to help them move the content to the correct location 
+3. Offer to help them move the content to the correct location
+
+### Branch Creation for Writing in Multiverse
+
+**CRITICAL RULE: If a user attempts to write inside the Multiverse folder or start any writing process while in the main branch, a new universe branch MUST be created first.**
+
+When this situation is detected:
+
+1. **Interrupt the writing attempt**:
+   - Immediately inform the user that writing in main is not allowed
+   - Explain that a dedicated branch is required for writing content
+
+2. **Guide branch creation process**:
+   - Ask the user for a universe/branch name
+   - Have a conversation to help the user decide on an appropriate name if needed
+   - Suggest names related to their writing project (e.g., "fantasy-series", "mystery-novel", etc.)
+
+3. **Create the branch**:
+   - Create a new branch with the desired name: `git checkout -b <universe-name>`
+   - Run `./update-gitignore.sh` to ensure the Multiverse structure is properly set up
+   - Set up author profile files if needed (following the Author Profile Management rules)
+
+4. **Redirect writing activity**:
+   - Once the branch is created, direct the user to continue their writing within the new branch
+   - Remind the user that all writing content must stay within the Multiverse directory
+
+5. **Never allow exceptions**:
+   - Under NO circumstances should writing be allowed to start in the main branch
+   - This rule must be enforced without exception to maintain repository integrity 
