@@ -34,11 +34,46 @@ This organization provides several benefits:
   - NEVER commit actual writing content to the main branch
   - Only push template improvements and structure changes to main
 
-- **Writing Branches**:
+- **Writing/Universe Branches**:
   - ALL writing work must be done in separate branches
   - Each branch contains its author content within the `Multiverse/` directory
   - A single branch can contain multiple related projects within appropriate subdirectories
   - The branch structure supports the full project organization described in the setup guide
+  - **IMPORTANT:** When pushing to GitHub, the Multiverse directory and its content SHOULD be included
+  - **IMPORTANT:** When merging with main, ONLY template improvements should be included, NOT Multiverse content
+
+## Pushing and Merging Rules
+
+### Pushing to GitHub from Writing/Universe Branches
+
+When pushing a writing/universe branch to GitHub:
+
+1. **Include Multiverse Content**:
+   - The entire Multiverse directory and all writing content within it SHOULD be pushed
+   - This preserves the complete writing project in the remote repository
+   - Run a normal `git push origin <branch-name>` to include all content
+
+2. **Backing Up Content**:
+   - Pushing to GitHub serves as a backup of your writing content
+   - All content organization, structure, and files are preserved
+
+### Merging with Main Branch
+
+When you need to merge template improvements TO the main branch:
+
+1. **Use Template Mode**:
+   - Always use the template mode script before merging to main
+   - Run `./template-mode.sh on` to activate template mode
+   - This ensures Multiverse content changes are ignored
+
+2. **Push Only Template Changes**:
+   - Use `git push origin HEAD:main` to push ONLY template changes to main
+   - This preserves the empty Multiverse structure in main
+   - Multiverse content stays in the writing branch and is NOT merged to main
+
+3. **Return to Writing Mode**:
+   - After pushing template changes, run `./template-mode.sh off`
+   - This ensures your content continues to be tracked correctly in your writing branch
 
 ## Author Profile Management
 

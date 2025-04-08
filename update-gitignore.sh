@@ -1,5 +1,15 @@
 #!/bin/bash
 # Script to create and maintain the Multiverse directory structure
+#
+# IMPORTANT:
+# This script creates the Multiverse directory structure and ensures that:
+# 1. In writing/universe branches: Content files (.md, .txt, .docx) are properly tracked
+#    - When in writing mode (.gitignore is normal), your content will be pushed with 'git push'
+# 2. In template mode: Content files are ignored when pushing to main
+#    - When in template mode (after ./template-mode.sh on), content changes are ignored 
+#      when pushing to main using 'git push origin HEAD:main'
+#
+# Run this script in a new branch to set up the directory structure
 
 # Create the Multiverse directory structure
 echo "Creating Multiverse directory structure..."
@@ -116,4 +126,13 @@ else
     echo "Created .gitignore-template with Multiverse patterns"
 fi
 
-echo "Multiverse directory structure setup complete!" 
+echo "Multiverse directory structure setup complete!"
+echo ""
+echo "IMPORTANT WORKFLOW NOTES:"
+echo "1. FOR WRITING BRANCHES: Use normal git commands to push content to GitHub"
+echo "   - Use 'git push origin <branch-name>' to include ALL your writing content"
+echo ""
+echo "2. FOR TEMPLATE CHANGES: Use template mode to push to main"
+echo "   - Run './template-mode.sh on' before making template changes"
+echo "   - Push template changes with 'git push origin HEAD:main'"
+echo "   - Run './template-mode.sh off' to return to writing mode" 
