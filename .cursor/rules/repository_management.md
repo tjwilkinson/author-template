@@ -2,6 +2,31 @@
 
 This rule file defines when and how to use the repository management scripts within this project. These scripts help maintain separation between template structure and writing content.
 
+## Branch Structure
+
+**CRITICAL RULE: The `main` branch must ONLY contain template and server files.**
+
+- **Main Branch**: 
+  - Reserved exclusively for template files and server implementation
+  - NEVER commit writing content to the main branch
+  - Only push template improvements to main
+
+- **Writing Branches**:
+  - ALL writing work must be done in separate branches
+  - Each branch can contain a complete writing project or multiverse
+  - A single branch can contain multiple related projects (series, educational materials, etc.)
+  - The branch structure supports the full project organization described in the setup guide
+
+### Multi-Project Organization Within a Branch
+
+As outlined in the setup guide, a single writing branch can contain an entire multiverse:
+- `Series/` - Multiple books in a series
+- `Education/` - Related educational materials
+- `Shared/` - Resources shared across projects
+- `Meta/` - Collection-wide planning
+
+This allows writers to maintain complex, interconnected works within a single branch while keeping the template structure clean in the main branch.
+
 ## Core Scripts
 
 The following scripts must be used in specific scenarios:
@@ -75,6 +100,14 @@ This script automatically adds content directories to the appropriate ignore fil
 2. Work in content directories as needed
 3. If new top-level directories are created, run `./update-gitignore.sh`
 
+### For Starting a New Project
+
+1. If the user wants to start a new, separate writing project:
+   - Create a new branch from main: `git checkout -b new-writing-project`
+   - This ensures they start with a clean template without existing content
+   - Complete the setup process for this new branch
+   - Run `./update-gitignore.sh` after folder creation
+
 ## Error Prevention
 
 If the user attempts to push template changes without using template mode:
@@ -85,4 +118,9 @@ If the user attempts to push template changes without using template mode:
 If the user attempts content creation while in template mode:
 1. Alert them that template mode is active
 2. Recommend running `./template-mode.sh off` first
-3. Explain that their content changes may not be properly tracked in this mode 
+3. Explain that their content changes may not be properly tracked in this mode
+
+If the user attempts to commit writing content directly to main:
+1. Immediately alert them that this violates the repository structure
+2. Recommend creating or switching to a writing branch
+3. Explain that main is reserved exclusively for template files 
