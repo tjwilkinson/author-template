@@ -41,4 +41,17 @@ var/
 *.db
 
 # User-specific workspace configurations
-*.code-workspace.user 
+*.code-workspace.user
+
+# Writing content directories (excluded from template updates)
+/Series/
+/Manuscript/
+/Projects/
+/Outlines/
+/Research/
+/Meta/
+/Education/
+/Shared/
+
+# Add a gitignore-template file to selectively ignore content
+.gitignore-template 

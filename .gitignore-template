@@ -1,0 +1,24 @@
+# This file is used when you want to push template improvements
+# It excludes all writing content but includes template and server files
+
+# Writing content directories
+/Series/
+/Manuscript/
+/Projects/
+/Outlines/
+/Research/
+/Meta/
+/Education/
+/Shared/
+
+# Keep system files excluded
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+__pycache__/
+*.py[cod]
+*$py.class
+.vscode/
+.idea/ 
