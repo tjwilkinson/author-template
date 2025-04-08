@@ -1,23 +1,46 @@
 #!/bin/bash
-# Script to update gitignore files with content directories
+# Script to create and maintain the Multiverse directory structure
 
-# Ensure the Author directory exists
-if [ ! -d "./Author" ]; then
-    echo "Creating Author directory..."
-    mkdir -p ./Author
-fi
+# Create the Multiverse directory structure
+echo "Creating Multiverse directory structure..."
 
-# Update .gitignore
+# Create main directories
+mkdir -p Multiverse/Series
+mkdir -p Multiverse/Education
+mkdir -p Multiverse/Shared/Characters
+mkdir -p Multiverse/Shared/Settings
+mkdir -p Multiverse/Shared/Timeline
+mkdir -p Multiverse/Meta
+
+# Add placeholder files to track the directories in git
+echo "# Series Directory" > Multiverse/Series/.gitkeep
+echo "# Education Directory" > Multiverse/Education/.gitkeep
+echo "# Shared Characters Directory" > Multiverse/Shared/Characters/.gitkeep
+echo "# Shared Settings Directory" > Multiverse/Shared/Settings/.gitkeep
+echo "# Shared Timeline Directory" > Multiverse/Shared/Timeline/.gitkeep
+echo "# Meta Directory" > Multiverse/Meta/.gitkeep
+
+# Update .gitignore if needed
 if [ -f .gitignore ]; then
     echo "Checking .gitignore file..."
     
-    # Check if the Author directory is already in .gitignore
-    if ! grep -q "/Author/" .gitignore; then
-        echo -e "\n# Author content directory - contains all writing content" >> .gitignore
-        echo "/Author/" >> .gitignore
-        echo "Added Author/ to .gitignore"
+    # Make sure the Multiverse structure patterns exist
+    if ! grep -q "/Multiverse/\*\*/\*\.md" .gitignore; then
+        cat >> .gitignore << EOL
+
+# Ignore writing content files within Multiverse, but keep the structure
+/Multiverse/**/*.md
+/Multiverse/**/*.txt
+/Multiverse/**/*.docx
+
+# Preserve the Multiverse directory structure
+!/Multiverse/
+!/Multiverse/*/
+!/Multiverse/*/*/
+EOL
+        echo "Updated .gitignore with Multiverse patterns"
     else
-        echo "Author/ already in .gitignore"
+        echo "Multiverse patterns already in .gitignore"
     fi
 else
     # Create .gitignore if it doesn't exist
@@ -30,12 +53,10 @@ else
 Icon
 ._*
 
-# Python virtual environment
-venv/
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-*.so
 
 # Editor files
 .vscode/
@@ -46,56 +67,53 @@ __pycache__/
 # Logs and databases
 *.log
 *.sqlite
-*.sqlite3
 *.db
 
-# User-specific workspace configurations
-*.code-workspace.user
+# Ignore writing content files within Multiverse, but keep the structure
+/Multiverse/**/*.md
+/Multiverse/**/*.txt
+/Multiverse/**/*.docx
 
-# Author content directory - contains all writing content
-/Author/
+# Preserve the Multiverse directory structure
+!/Multiverse/
+!/Multiverse/*/
+!/Multiverse/*/*/
 
 # Add a gitignore-template file to selectively ignore content
 .gitignore-template
 EOL
-    echo "Created .gitignore with Author/ directory ignored"
+    echo "Created .gitignore with Multiverse patterns"
 fi
 
-# Update .gitignore-template
+# Update .gitignore-template the same way
 if [ -f .gitignore-template ]; then
     echo "Checking .gitignore-template file..."
     
-    # Check if the Author directory is already in .gitignore-template
-    if ! grep -q "/Author/" .gitignore-template; then
-        echo -e "\n# Author content directory - contains all writing content" >> .gitignore-template
-        echo "/Author/" >> .gitignore-template
-        echo "Added Author/ to .gitignore-template"
+    # Make sure the Multiverse structure patterns exist
+    if ! grep -q "/Multiverse/\*\*/\*\.md" .gitignore-template; then
+        cat >> .gitignore-template << EOL
+
+# Ignore writing content files within Multiverse, but keep the structure
+/Multiverse/**/*.md
+/Multiverse/**/*.txt
+/Multiverse/**/*.docx
+
+# Preserve the Multiverse directory structure
+!/Multiverse/
+!/Multiverse/*/
+!/Multiverse/*/*/
+EOL
+        echo "Updated .gitignore-template with Multiverse patterns"
     else
-        echo "Author/ already in .gitignore-template"
+        echo "Multiverse patterns already in .gitignore-template"
     fi
 else
     # Create .gitignore-template if it doesn't exist
     echo "Creating .gitignore-template file..."
-    cat > .gitignore-template << EOL
-# This file is used when you want to push template improvements
-# It excludes all writing content but includes template and server files
-
-# Author content directory - contains all writing content
-/Author/
-
-# Keep system files excluded
-.DS_Store
-.AppleDouble
-.LSOverride
-Icon
-._*
-__pycache__/
-*.py[cod]
-*$py.class
-.vscode/
-.idea/
-EOL
-    echo "Created .gitignore-template with Author/ directory ignored"
+    cp .gitignore .gitignore-template
+    sed -i.bak '1s/^/# This file is used when you want to push template improvements\n# It contains the same rules as the regular gitignore\n\n/' .gitignore-template
+    rm -f .gitignore-template.bak
+    echo "Created .gitignore-template with Multiverse patterns"
 fi
 
-echo "GitIgnore files updated successfully." 
+echo "Multiverse directory structure setup complete!" 
