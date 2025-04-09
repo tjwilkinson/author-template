@@ -1,0 +1,14 @@
+analysis:
+  consistency_check: true
+  originality_check: false
+  quality_check: true
+  style_check: true
+monitoring:
+  check_interval: 2.0
+  enabled: true
+  ignore_patterns:
+  - .git/*
+  - .cursor/Server/*
+  - '*.pyc'
+  - '*.swp'
+workspace_root: /Users/timjonwilkinson/Writing/Author Template
