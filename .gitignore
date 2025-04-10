@@ -1,0 +1,45 @@
+# This file is used when you want to push template improvements
+# It contains the same rules as the regular gitignore
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.cursor/Server/venv/
+template_updates/Server/venv/
+**/venv/
+**/.venv/
+
+# Large binary files
+*.dylib
+*.so
+*.pdf
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+
+# Ignore writing content files within Multiverse, but keep the structure
+/Multiverse/**/*.md
+/Multiverse/**/*.txt
+/Multiverse/**/*.docx
+
+# Preserve the Multiverse directory structure
+!/Multiverse/
+!/Multiverse/*/
+!/Multiverse/*/*/
+
+# Gitignore template
+.gitignore-template
