@@ -18,7 +18,8 @@ template_updates/Server/venv/
 # Large binary files
 *.dylib
 *.so
-*.pdf
+# Allow PDFs in the Multiverse directory
+# *.pdf 
 
 # Editor files
 .vscode/
@@ -31,15 +32,8 @@ template_updates/Server/venv/
 *.sqlite
 *.db
 
-# Ignore writing content files within Multiverse, but keep the structure
-/Multiverse/**/*.md
-/Multiverse/**/*.txt
-/Multiverse/**/*.docx
-
-# Preserve the Multiverse directory structure
-!/Multiverse/
-!/Multiverse/*/
-!/Multiverse/*/*/
+# In universe branch, INCLUDE all Multiverse content
+# Preserving all Multiverse content for the universe branch
 
 # Gitignore template
 .gitignore-template
