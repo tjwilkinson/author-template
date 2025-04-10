@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Author Workspace Analysis</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        h1 {
+            margin: 0;
+            color: #2c3e50;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .status.running {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+        .status.stopped {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+        .panel {
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        .tab.active {
+            border-bottom: 2px solid #3498db;
+            color: #3498db;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        table th {
+            background-color: #f9f9f9;
+        }
+        .severity {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        .severity.error {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+        .severity.warning {
+            background-color: #fff8e1;
+            color: #ff8f00;
+        }
+        .severity.info {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .stat-box {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            margin: 0 10px;
+        }
+        .stat-box:first-child {
+            margin-left: 0;
+        }
+        .stat-box:last-child {
+            margin-right: 0;
+        }
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .btn-secondary {
+            background-color: #95a5a6;
+        }
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+        .target-input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 300px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Author Workspace Analysis</h1>
+        <div>
+            <span class="status running" id="server-status">Running</span>
+        </div>
+    </header>
+
+    <div class="panel">
+        <h2>Analysis Control</h2>
+        <div>
+            <input type="text" id="target-input" class="target-input" placeholder="Target file or directory (e.g., Projects/MyNovel)">
+            <button class="btn" id="analyze-btn">Analyze</button>
+            <button class="btn btn-secondary" id="clear-btn">Clear Results</button>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>Analysis Overview</h2>
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number" id="total-files">0</div>
+                <div class="stat-label">Total Files</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="analyzed-files">0</div>
+                <div class="stat-label">Analyzed Files</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="issue-count">0</div>
+                <div class="stat-label">Issues Found</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="last-updated">-</div>
+                <div class="stat-label">Last Updated</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="tabs">
+            <div class="tab active" data-tab="issues">Issues</div>
+            <div class="tab" data-tab="consistency">Consistency</div>
+            <div class="tab" data-tab="style">Style</div>
+            <div class="tab" data-tab="quality">Quality</div>
+        </div>
+
+        <div class="tab-content active" id="issues-tab">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Severity</th>
+                        <th>File</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody id="issues-table">
+                    <!-- Issues will be populated here -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tab-content" id="consistency-tab">
+            <h3>Consistency Analysis</h3>
+            <p>Consistency analysis checks for narrative coherence, character consistency, setting details, and plot continuity.</p>
+            <div id="consistency-details"></div>
+        </div>
+
+        <div class="tab-content" id="style-tab">
+            <h3>Style Analysis</h3>
+            <p>Style analysis examines writing voice, sentence structure, vocabulary usage, and other stylistic elements.</p>
+            <div id="style-details"></div>
+        </div>
+
+        <div class="tab-content" id="quality-tab">
+            <h3>Quality Assessment</h3>
+            <p>Quality assessment evaluates grammar, spelling, readability, clarity, and overall writing quality.</p>
+            <div id="quality-details"></div>
+        </div>
+    </div>
+
+    <script>
+        // Tab functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab + '-tab').classList.add('active');
+            });
+        });
+
+        // Server status polling
+        function updateServerStatus() {
+            fetch('/api/status')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('server-status').textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+                    document.getElementById('server-status').className = 'status ' + data.status;
+                    
+                    // Update stats
+                    document.getElementById('total-files').textContent = data.analysis_results.stats.total_files;
+                    document.getElementById('analyzed-files').textContent = data.analysis_results.stats.analyzed_files;
+                    document.getElementById('issue-count').textContent = data.analysis_results.stats.issues_found;
+                    
+                    if (data.analysis_results.last_updated) {
+                        const date = new Date(data.analysis_results.last_updated * 1000);
+                        document.getElementById('last-updated').textContent = date.toLocaleTimeString();
+                    }
+                    
+                    // Update issues table
+                    const issuesTable = document.getElementById('issues-table');
+                    issuesTable.innerHTML = '';
+                    
+                    data.analysis_results.issues.forEach(issue => {
+                        const row = document.createElement('tr');
+                        
+                        const typeCell = document.createElement('td');
+                        typeCell.textContent = issue.type.charAt(0).toUpperCase() + issue.type.slice(1);
+                        row.appendChild(typeCell);
+                        
+                        const severityCell = document.createElement('td');
+                        const severitySpan = document.createElement('span');
+                        severitySpan.className = 'severity ' + issue.severity;
+                        severitySpan.textContent = issue.severity.charAt(0).toUpperCase() + issue.severity.slice(1);
+                        severityCell.appendChild(severitySpan);
+                        row.appendChild(severityCell);
+                        
+                        const fileCell = document.createElement('td');
+                        fileCell.textContent = issue.file;
+                        row.appendChild(fileCell);
+                        
+                        const messageCell = document.createElement('td');
+                        messageCell.textContent = issue.message;
+                        row.appendChild(messageCell);
+                        
+                        issuesTable.appendChild(row);
+                    });
+                    
+                    if (data.analysis_results.issues.length === 0) {
+                        const row = document.createElement('tr');
+                        const cell = document.createElement('td');
+                        cell.colSpan = 4;
+                        cell.textContent = 'No issues found.';
+                        cell.style.textAlign = 'center';
+                        row.appendChild(cell);
+                        issuesTable.appendChild(row);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching server status:', error);
+                    document.getElementById('server-status').textContent = 'Disconnected';
+                    document.getElementById('server-status').className = 'status stopped';
+                });
+        }
+        
+        // Initial update and polling
+        updateServerStatus();
+        setInterval(updateServerStatus, 5000);
+        
+        // Analyze button
+        document.getElementById('analyze-btn').addEventListener('click', () => {
+            const target = document.getElementById('target-input').value.trim();
+            if (!target) {
+                alert('Please enter a target file or directory.');
+                return;
+            }
+            
+            fetch('/api/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ target })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Analysis failed');
+                }
+                return response.json();
+            })
+            .then(data => {
+                updateServerStatus();
+                alert(`Analysis complete. Found ${data.stats.issues_found} issues in ${data.stats.analyzed_files} files.`);
+            })
+            .catch(error => {
+                console.error('Error during analysis:', error);
+                alert('Analysis failed. Check the console for details.');
+            });
+        });
+        
+        // Clear results button
+        document.getElementById('clear-btn').addEventListener('click', () => {
+            document.getElementById('issues-table').innerHTML = '';
+            document.getElementById('total-files').textContent = '0';
+            document.getElementById('analyzed-files').textContent = '0';
+            document.getElementById('issue-count').textContent = '0';
+            document.getElementById('last-updated').textContent = '-';
+        });
+    </script>
+</body>
+</html> 
